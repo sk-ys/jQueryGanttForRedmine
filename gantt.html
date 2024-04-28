@@ -182,11 +182,6 @@ function download(data, filename, type) {
   }
 }
 
-function newProject(){
-  clearGantt();
-}
-
-
 function clearGantt() {
   ge.reset();
 }
@@ -279,17 +274,8 @@ function showBaselineInfo (event,element){
       <span class="ganttButtonSeparator"></span>
       <button onclick="$('#workSpace').trigger('fullScreen.gantt');return false;" class="button textual icon" title="FULLSCREEN" id="fullscrbtn"><span class="teamworkIcon">@</span></button>
       <button onclick="ge.element.toggleClass('colorByStatus' );return false;" class="button textual icon"><span class="teamworkIcon">&sect;</span></button>
-
-      &nbsp; &nbsp; &nbsp; &nbsp;
-    </div>
-
-    <div>
+    <span class="ganttButtonSeparator"></span>
       <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
-      <input type="file" name="load-file" id="load-file">
-      <label for="load-file">Load</label>
-      <button onclick='newProject();' class='button requireWrite newproject'><em>clear project</em></button>
-      <button class="button login" title="login/enroll" onclick="loginEnroll($(this));" style="display:none;">login/enroll</button>
-      <button class="button opt collab" title="Start with Twproject" onclick="collaborate($(this));" style="display:none;"><em>collaborate</em></button>
     </div>
   </div>
   -->
