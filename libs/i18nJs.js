@@ -127,6 +127,9 @@ var millisInWorkingDay =28800000;
 var workingDaysPerWeek =5;
 
 function isHoliday(date) {
+  // Prevent holiday calculations
+  return false;
+
   var friIsHoly =false;
   var satIsHoly =true;
   var sunIsHoly =true;
