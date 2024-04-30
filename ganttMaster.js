@@ -595,7 +595,7 @@ GanttMaster.prototype.changeTaskDates = function (task, start, end) {
 
 
 GanttMaster.prototype.moveTask = function (task, newStart) {
-  return task.moveTo(newStart, true,true);
+  return task.moveTo(newStart, true,true,true);
 };
 
 

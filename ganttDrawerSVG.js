@@ -273,7 +273,8 @@ Ganttalendar.prototype.drawTask = function (task) {
         task.rowElement.click();
       }).dragExtedSVG($(self.svg.root()), {
         canResize:  this.master.permissions.canWrite || task.canWrite,
-        canDrag:    !task.depends && (this.master.permissions.canWrite || task.canWrite),
+        // canDrag:    !task.depends && (this.master.permissions.canWrite || task.canWrite),
+        canDrag: this.master.permissions.canWrite || task.canWrite,
         resizeZoneWidth:self.resizeZoneWidth,
         startDrag:  function (e) {
           $(".ganttSVGBox .focused").removeClass("focused");
@@ -383,7 +384,9 @@ Ganttalendar.prototype.drawTask = function (task) {
           }
 
           if (taskTo && taskFrom) {
-            var gap = 0;
+            var gap = $("#automaticallyUpdateLag").is(":checked")
+              ? getDistanceInUnits(new Date(taskFrom.end), new Date(taskTo.start)) - 1
+              : 0;
             var depInp = taskTo.rowElement.find("[name=depends]");
             depInp.val(depInp.val() + ((depInp.val() + "").length > 0 ? "," : "") + (taskFrom.getRow() + 1) + (gap != 0 ? ":" + gap : ""));
             depInp.blur();

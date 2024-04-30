@@ -160,7 +160,13 @@ Task.prototype.setPeriod = function (start, end) {
   //if there are dependencies compute the start date and eventually moveTo
   var startBySuperiors = this.computeStartBySuperiors(start);
   if (startBySuperiors != start) {
-    return this.moveTo(startBySuperiors, false,true);
+    if ($("#automaticallyUpdateLag").is(":checked")) {
+      // Update lag
+      const lagOffset = getDistanceInUnits(new Date(startBySuperiors), new Date(start));
+      this.updateLag(lagOffset);
+    } else {
+      return this.moveTo(startBySuperiors, false,true);
+    }
   }
 
   var somethingChanged = false;
@@ -253,7 +259,7 @@ Task.prototype.setPeriod = function (start, end) {
 
 
 //<%---------- MOVE TO ---------------------- --%>
-Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors) {
+Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors, updateLag = false) {
   //console.debug("moveTo ",this.name,new Date(start),this.duration,ignoreMilestones);
   //var profiler = new Profiler("gt_task_moveTo");
 
@@ -272,7 +278,15 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors)
   start = computeStart(start);
 
   //if depends, start is set to max end + lag of superior
-  start = this.computeStartBySuperiors(start);
+  const startBySuperiors = this.computeStartBySuperiors(start);
+
+  if (updateLag && startBySuperiors != start && $("#automaticallyUpdateLag").is(":checked")) {
+    // Update lag
+    const lagOffset = getDistanceInUnits(new Date(startBySuperiors), new Date(start));
+    this.updateLag(lagOffset);
+  } else {
+    start = startBySuperiors;
+  }
 
   var end = computeEndByDuration(start, this.duration);
 
@@ -328,6 +342,18 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors)
 
   return true;
 };
+
+
+Task.prototype.updateLag = function (offsetLag) {
+  var task = this;
+
+  this.master.links
+    .filter((link) => link.to.id === task.id)
+    .forEach((link) => link.lag += offsetLag);
+    
+  //recompute depends string
+  this.master.updateDependsStrings();
+}
 
 
 Task.prototype.checkMilestonesConstraints = function (newStart,newEnd,ignoreMilestones) {

@@ -275,6 +275,8 @@ function showBaselineInfo (event,element){
       <button onclick="$('#workSpace').trigger('fullScreen.gantt');return false;" class="button textual icon" title="FULLSCREEN" id="fullscrbtn"><span class="teamworkIcon">@</span></button>
       <button onclick="ge.element.toggleClass('colorByStatus' );return false;" class="button textual icon"><span class="teamworkIcon">&sect;</span></button>
     <span class="ganttButtonSeparator"></span>
+    <input type="checkbox" id="automaticallyUpdateLag"><label for="automaticallyUpdateLag">Automatically update lag<label>
+    <span class="ganttButtonSeparator"></span>
       <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
     </div>
   </div>
